@@ -33,12 +33,20 @@ describe Oystercard do
     expect(subject).not_to be_in_journey
   end
 
+describe "#touch_in" do
   it 'can touch in' do
+    subject.top_up(Oystercard::MAX_BALANCE)
     subject.touch_in
     expect(subject).to be_in_journey
   end
 
+  it 'raises an error' do
+    expect { subject.touch_in }.to raise_error 'Not enough money on Oystercard'
+  end
+end
+
   it 'can touch out' do
+    subject.top_up(Oystercard::MAX_BALANCE)
     subject.touch_in
     subject.touch_out
     expect(subject).not_to be_in_journey
