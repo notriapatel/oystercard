@@ -15,8 +15,10 @@ describe Oystercard do
       expect{ subject.top_up 1 }.to change{ subject.balance }.by 1
     end
 
-    it 'has a limit of 90' do
-      max
+    it "raises an error if the max balance is exceeded" do
+      max_balance = Oystercard::MAX_BALANCE
+      subject.top_up(max_balance)
+      expect { subject.top_up 1 }.to raise_error "Balance cannot exceed £#{max_balance}"
+    end
   end
-
 end
