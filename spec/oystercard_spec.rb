@@ -29,21 +29,19 @@ describe Oystercard do
     end
   end
 
-  # describe "#in_journey" do
-  #   it "checks if oyster card is currently in journey" do
-  #     expect(subject.in_journey?).to eq false
-  #   end
-  # end
+  it 'is initially not in journey' do
+    expect(subject).not_to be_in_journey
+  end
 
-  # describe "#touch_in" do
-  #   it "touches in" do
-  #     expect(subject.touch_in).to eq true
-  #   end
-  # end
+  it 'can touch in' do
+    subject.touch_in
+    expect(subject).to be_in_journey
+  end
 
-  # describe "#touch_out" do
-  #   it "touches out" do
-  #     expect(subject.touch_out).to eq false
-  #   end
-  # end
+  it 'can touch out' do
+    subject.touch_in
+    subject.touch_out
+    expect(subject).not_to be_in_journey
+  end
+
 end
