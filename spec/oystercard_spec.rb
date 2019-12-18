@@ -1,7 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
-  
+
   describe '#initialize' do
     it "has a balance of zero" do
         expect(subject.balance).to eq(0)
@@ -33,6 +33,13 @@ describe Oystercard do
     expect(subject).not_to be_in_journey
   end
 
+describe "#touch_out" do
+  it "deducts minimum fare on touch out" do
+    expect { @balance }.to change{ @balance }.by(1)
+  end
+end
+
+
 describe "#touch_in" do
   it 'can touch in' do
     subject.top_up(Oystercard::MAX_BALANCE)
@@ -45,11 +52,13 @@ describe "#touch_in" do
   end
 end
 
+
   it 'can touch out' do
     subject.top_up(Oystercard::MAX_BALANCE)
     subject.touch_in
     subject.touch_out
     expect(subject).not_to be_in_journey
   end
+
 
 end
