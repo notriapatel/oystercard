@@ -47,13 +47,15 @@ describe Oystercard do
       expect{subject.touch_out(:exit_station)}.to change{subject.balance}.by(-Oystercard::MIN_FARE)
     end 
     
+
+    # could use a before block but put the above in a context
     it 'forgets station on touch_out' do 
       subject.top_up(Oystercard::MIN_FARE)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
       expect(subject.entry_station).to eq nil
     end  
-    
+
     let(:journey) {{start: entry_station, end: exit_station}}
     it 'checks for a full hash in array' do 
       subject.top_up(Oystercard::MIN_FARE)
