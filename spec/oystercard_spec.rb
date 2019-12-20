@@ -1,6 +1,11 @@
 require 'oystercard'
 
 describe Oystercard do 
+  
+  let(:entry_station) {double :entry_station}
+  let(:exit_station) {double :exit_station}
+  
+
   describe '#initialization' do 
     it 'has a balance of zero' do
     expect(subject.balance).to eq 0
@@ -24,15 +29,15 @@ describe Oystercard do
     end
   end 
 
-let(:station) {double :station}
   describe '#touch_in' do 
     it 'raises error if balance < min fare' do 
-      expect{subject.touch_in(station)}.to raise_error "Not enough money on Oystercard" 
+      expect{subject.touch_in(entry_station)}.to raise_error "Not enough money on Oystercard" 
     end 
+
     it 'stores entry_station' do 
       subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq entry_station
     end 
   end 
 
@@ -44,17 +49,20 @@ let(:station) {double :station}
     
     it 'forgets station on touch_out' do 
       subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
-      subject.touch_out(:exit_station)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
       expect(subject.entry_station).to eq nil
     end  
-
-    it 'stores exit_station' do 
+    
+    let(:journey) {{start: entry_station, end: exit_station}}
+    it 'checks for a full hash in array' do 
       subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject.exit_station).to eq station
-    end 
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journey_history).to eq [journey]
+      # expect(subject.journey_history).to include journey
+      # same shit ^^^
+    end
   end 
 
   describe '#in_journey?' do
@@ -64,7 +72,7 @@ let(:station) {double :station}
 
     it 'should be true after touching in' do
       subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
+      subject.touch_in(entry_station)
       expect(subject.in_journey?).to be true
     end 
   end 
