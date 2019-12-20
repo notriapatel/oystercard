@@ -10,4 +10,10 @@ describe Journey do
       expect(subject.ends).to eq nil
     end
   end
+
+  describe '#touch_in' do
+    it 'starts a journey' do
+      
+    end
+  end
 end
