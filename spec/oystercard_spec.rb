@@ -4,7 +4,7 @@ describe Oystercard do
   
   let(:entry_station) {double :entry_station}
   let(:exit_station) {double :exit_station}
-  
+  let(:journey) {{start: entry_station, end: exit_station}}
 
   describe '#initialization' do 
     it 'has a balance of zero' do
@@ -47,20 +47,18 @@ describe Oystercard do
       expect{subject.touch_out(:exit_station)}.to change{subject.balance}.by(-Oystercard::MIN_FARE)
     end 
     
-
-    # could use a before block but put the above in a context
-    it 'forgets station on touch_out' do 
+    # put the above in a context?
+    before(:each) do
       subject.top_up(Oystercard::MIN_FARE)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
+    end
+
+    it 'forgets station on touch_out' do 
       expect(subject.entry_station).to eq nil
     end  
 
-    let(:journey) {{start: entry_station, end: exit_station}}
     it 'checks for a full hash in array' do 
-      subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(entry_station)
-      subject.touch_out(exit_station)
       expect(subject.journey_history).to eq [journey]
       # expect(subject.journey_history).to include journey
       # same shit ^^^

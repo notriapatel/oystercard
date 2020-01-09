@@ -1,10 +1,9 @@
 class Journey
 
-  attr_reader :start, :ends
+  attr_reader :starts, :ends
 
   def initialize
-    @start = start
+    @starts = starts
     @ends = ends
   end
-  
 end
